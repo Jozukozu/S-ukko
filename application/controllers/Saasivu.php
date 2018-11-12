@@ -10,7 +10,8 @@ class Saasivu extends CI_Controller {
 
   public function show_weather(){
     $this->load->model('Saasivu_model');
-    $data['saatila']=$this->Saasivu_model->get_weather();
+    $data['nykytila']=$this->Saasivu_model->get_nykytila();
+    $data['nykytila_aika']=$this->Saasivu_model->get_nykytila_aika();
     $data['page']='saasivu/show_weather';
     $this->load->view('menu/content',$data);
   }
@@ -23,6 +24,7 @@ class Saasivu extends CI_Controller {
 
   public function maanantai(){
     $this->load->model('Saasivu_model');
+    $data['saatila']=$this->Saasivu_model->get_nykytila();
     $data['page']='saasivu/maanantai';
     $this->load->view('menu/content',$data);
   }
