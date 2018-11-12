@@ -36,13 +36,13 @@
         <li class="dropdown">
           <a href="<?php echo site_url('saasivu/show_weather_history');?>" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Säähistoria<span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="#">Päivä1</a></li>
-            <li><a href="#">Päivä2</a></li>
-            <li><a href="#">Päivä3</a></li>
-            <li><a href="#">Päivä4</a></li>
-            <li><a href="#">Päivä5</a></li>
-            <li><a href="#">Päivä6</a></li>
-            <li><a href="#">Päivä7</a></li>
+            <li><a href="<?php echo site_url('saasivu/maanantai');?>">Maanantai</a></li>
+            <li><a href="<?php echo site_url('saasivu/tiistai');?>">Tiistai</a></li>
+            <li><a href="<?php echo site_url('saasivu/keskiviikko');?>">Keskiviikko</a></li>
+            <li><a href="<?php echo site_url('saasivu/torstai');?>">Torstai</a></li>
+            <li><a href="<?php echo site_url('saasivu/perjantai');?>">Perjantai</a></li>
+            <li><a href="<?php echo site_url('saasivu/lauantai');?>">Lauantai</a></li>
+            <li><a href="<?php echo site_url('saasivu/sunnuntai');?>">Sunnuntai</a></li>
           </ul>
         </li>
       </ul>
