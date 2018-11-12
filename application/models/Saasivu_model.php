@@ -27,4 +27,12 @@ class Saasivu_model extends CI_model
     return $this->db->get()->result_array();
   }
 
+  public function get_nykytila_aika(){
+    $this->db->select('pvm, vkpaiva, kello');
+    $this->db->from('saatila');
+    $this->db->order_by('idsaatila', 'desc');
+    $this->db->limit(1);
+    return $this->db->get()->result_array();
+  }
+
 }
