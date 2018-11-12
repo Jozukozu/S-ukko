@@ -9,6 +9,7 @@ class Saasivu extends CI_Controller {
     }
 
   public function show_weather(){
+        $this->load->library('image_lib');
         $data['page']='saasivu/show_weather';
         $this->load->view('menu/content',$data);
     }
