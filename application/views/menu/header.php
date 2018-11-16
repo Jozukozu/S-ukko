@@ -33,7 +33,15 @@
       <ul class="nav navbar-nav">
         <li><a href="<?php echo site_url();?>">Etusivu</a></li>
         <li><a href="<?php echo site_url('saasivu/show_weather');?>">Sää</a></li>
-        <li><a href="<?php echo site_url('saasivu/show_weather_history');?>">Säähistoria</a></li>
+        <li class="dropdown">
+        <a class="dropdown" data-toggle="dropdown" href="#">Säähistoria
+        <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="#">Page 1-1</a></li>
+          <li><a href="#">Page 1-2</a></li>
+          <li><a href="#">Page 1-3</a></li>
+        </ul>
+      </li>
       </ul>
     </div>
   </nav>

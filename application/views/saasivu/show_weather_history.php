@@ -1,6 +1,7 @@
 <h2>Säähistoria</h2><br>
 
-
+<?php $date = strtotime($nykytila_aika[0]['pvm']);
+$date2 = strtotime('-4 day', $date); ?>
 
 <button onclick="maanantaiShow()" class="btn btn-primary">1</button>
 
@@ -11,7 +12,7 @@
     </tr>
     <?php
       foreach ($saatila as $rivi) {
-        if($rivi['vkpaiva'] == "Maanantai")
+        if($rivi['pvm'] == "$date2")
         {
         echo '<tr>';
         echo '<td>'.$rivi['pvm'].'</td>';
