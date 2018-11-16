@@ -22,14 +22,14 @@ class Saasivu_model extends CI_model
   public function get_nykytila(){
     $this->db->select('saa, lampo, sade, kosteus, valo, ilmanpaine');
     $this->db->from('saatila');
-    $this->db->where('idsaatila' = 0);
+    $this->db->where('idsaatila', 0);
     return $this->db->get()->result_array();
   }
 
   public function get_nykytila_aika(){
     $this->db->select('pvm, vkpaiva, kello');
     $this->db->from('saatila');
-    $this->db->where('idsaatila' = 0);
+    $this->db->where('idsaatila', 0);
     return $this->db->get()->result_array();
   }
 
