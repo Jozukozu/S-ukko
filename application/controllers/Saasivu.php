@@ -18,6 +18,7 @@ class Saasivu extends CI_Controller {
 
   public function show_weather_history(){
     $this->load->model('Saasivu_model');
+    $data['saatila']=$this->Saasivu_model->get_weather();
     $data['page']='saasivu/show_weather_history';
     $this->load->view('menu/content',$data);
   }
