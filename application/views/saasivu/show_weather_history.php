@@ -1,47 +1,66 @@
-<h2>Säähistoria</h2><br>
-
-<?php $date = strtotime($nykytila_aika[0]['pvm']);
-$date2 = strtotime('-4 day', $date); ?>
-
-<button onclick="maanantaiShow()" class="btn btn-primary">1</button>
-
-<div id="maanantai">
-  <table class="table table-bordered table-hover">
-    <tr class="table table-info">
-      <th>pvm</th><th>kello</th><th>saa</th><th>lampo</th><th>sade</th><th>kosteus</th><th>valo</th><th>vkpaiva</th>
-    </tr>
+<br><h2>Säähistoria <?php echo substr($saatila[0]['pvm'],0,-2) ?></h2><br><br><br>
+<?php
+$dir = "assets/images/";
+?>
+<div>
+  <table class="table table-borderless">
     <?php
-      foreach ($saatila as $rivi) {
-        if($rivi['pvm'] == "$date2")
+    foreach ($saatila as $rivi) {
+      echo '<tr>';
+      echo '<td align="center" style="vertical-align:middle"><font size="5">'.substr($rivi['kello'],0,-3).'</font></td>';
+      echo '<td align="center" style="vertical-align:middle"><table class="table table-borderless"><tr>';
+      if($rivi['sade'] > 0.1 && $rivi['lampo'] >= 0)
+      {
+        echo '<td align="center" style="vertical-align:middle"><img src="'.base_url($dir)."/sade.png".'" alt="" height="150" width="150"></td>';
+        if($rivi['sade'] < 0.3)
         {
-        echo '<tr>';
-        echo '<td>'.$rivi['pvm'].'</td>';
-        echo '<td>'.$rivi['kello'].'</td>';
-        echo '<td>'.$rivi['saa'].'</td>';
-        echo '<td>'.$rivi['lampo'].'</td>';
-        echo '<td>'.$rivi['sade'].'</td>';
-        echo '<td>'.$rivi['kosteus'].'</td>';
-        echo '<td>'.$rivi['valo'].'</td>';
-        echo '<td>'.$rivi['vkpaiva'].'</td>';
-        echo '</tr>';
+          $saa = "Kevyttä sadetta";
+        }
+        else if($rivi['sade'] < 0.7)
+        {
+          $saa = "Sadetta";
+        }
+        else
+        {
+          $saa = "Rankkaa sadetta";
+        }
       }
+      else if($rivi['sade'] > 0.1 && $rivi['lampo'] < 0)
+      {
+        echo '<td align="center" style="vertical-align:middle"><img src="'.base_url($dir)."/lumi.png".'" alt="" height="150" width="150"></td>';
+        $saa = "Lumisadetta";
       }
+      else if($rivi['valo'] < 10 && (substr($rivi['kello'],0,-6) > 19 || substr($rivi['kello'],0,-6) < 7))
+      {
+        echo '<td align="center" style="vertical-align:middle"><img src="'.base_url($dir)."/puolipilvikuu.png".'" alt="" height="150" width="150"></td>';
+        $saa = "Puolipilvistä";
+      }
+      else if($rivi['valo'] < 50 && (substr($rivi['kello'],0,-6) > 19 || substr($rivi['kello'],0,-6) < 7))
+      {
+        echo '<td align="center" style="vertical-align:middle"><img src="'.base_url($dir)."/kuu.png".'" alt="" height="150" width="150"></td>';
+        $saa = "Poutaista";
+      }
+      else if($rivi['valo'] < 500)
+      {
+        echo '<td align="center" style="vertical-align:middle"><img src="'.base_url($dir)."/pilvi.png".'" alt="" height="150" width="150"></td>';
+        $saa = "Pilvistä";
+      }
+      else if($rivi['valo'] < 1500)
+      {
+        echo '<td align="center" style="vertical-align:middle"><img src="'.base_url($dir)."/puolipilvi.png".'" alt="" height="150" width="150"></td>';
+        $saa = "Puolipilvistä";
+      }
+      else
+      {
+        echo '<td align="center" style="vertical-align:middle"><img src="'.base_url($dir)."/aurinko.png".'" alt="" height="150" width="150"></td>';
+        $saa = "Poutaista";
+      }
+      echo '</tr><tr><td align="center" style="vertical-align:middle"><font size="4">'.$saa.'</font></td></tr></table>';
+      echo '<td align="center" style="vertical-align:middle"><table class="table table-borderless"><tr><td align="center" style="vertical-align:middle"><font size="4">Lämpötila: '.$rivi['lampo'].'°C</font></td></tr>';
+      echo '<tr><td align="center" style="vertical-align:middle"><font size="4">Ilmankosteus: '.$rivi['kosteus'].' %</font></td></tr>';
+      echo '<tr><td align="center" style="vertical-align:middle"><font size="4">Ilmanpaine: '.$rivi['ilmanpaine'].' hPa</font></td></tr></table></td>';
+      echo '</tr>';
+    }
     ?>
   </table>
 </div>
-
-<script>
-  var x = document.getElementById("maanantai");
-  x.style.display = "none";
-</script>
-
-<script>
-function maanantaiShow() {
-    var x = document.getElementById("maanantai");
-    if (x.style.display === "none") {
-        x.style.display = "inline";
-    } else {
-        x.style.display = "none";
-    }
-}
-</script>

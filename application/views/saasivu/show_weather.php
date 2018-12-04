@@ -1,17 +1,131 @@
-<h2>Sää</h2><br>
+<br><h2>Säätila <?php echo substr($saatila[0]['pvm'],0,-2) ?></h2><br>
 <?php
 $dir = "assets/images/";
 ?>
-<?php if($nykytila[0]['sade'] < 1) { ?>
-<img src="<?php echo base_url($dir)."/aurinko.png";?>" alt="">
-<?php } ?>
-<?php if($nykytila[0]['sade'] == 1) { ?>
-<img src="<?php echo base_url($dir)."/sade.png";?>" alt="">
-<?php } ?>
-<br><br>
-Nykyinen säätila <br>
-Lämpötila: <?php echo $nykytila[0]['lampo'] ?><br>
-Ilmankosteus: <?php echo $nykytila[0]['kosteus'] ?><br>
-Ilmanpaine: <?php echo $nykytila[0]['ilmanpaine'] ?><br>
-<sub>Viimeksi päivitetty <?php echo substr($nykytila_aika[0]['kello'],0,-3).' '.$nykytila_aika[0]['pvm'] ?> <br>
-</sub>
+<div class="column left">
+  <img src="<?php if($saatila[0]['sade'] > 0.1 && $saatila[0]['lampo'] >= 0)
+  {
+    echo base_url($dir)."/sade.png";
+    if($saatila[0]['sade'] < 0.3)
+    {
+      $saa = "Kevyttä sadetta";
+    }
+    else if($saatila[0]['sade'] < 0.7)
+    {
+      $saa = "Sadetta";
+    }
+    else
+    {
+      $saa = "Rankkaa sadetta";
+    }
+  }
+  else if($saatila[0]['sade'] > 0.1 && $saatila[0]['lampo'] < 0)
+  {
+    echo base_url($dir)."/lumi.png";
+    $saa = "Lumisadetta";
+  }
+  else if($saatila[0]['valo'] < 10 && (substr($saatila[0]['kello'],0,-6) > 19 || substr($saatila[0]['kello'],0,-6) < 7))
+  {
+    echo base_url($dir)."/puolipilvikuu.png";
+    $saa = "Puolipilvistä";
+  }
+  else if($saatila[0]['valo'] < 50 && (substr($saatila[0]['kello'],0,-6) > 19 || substr($saatila[0]['kello'],0,-6) < 7))
+  {
+    echo base_url($dir)."/kuu.png";
+    $saa = "Poutaista";
+  }
+  else if($saatila[0]['valo'] < 500)
+  {
+    echo base_url($dir)."/pilvi.png";
+    $saa = "Pilvistä";
+  }
+  else if($saatila[0]['valo'] < 1500)
+  {
+    echo base_url($dir)."/puolipilvi.png";
+    $saa = "Puolipilvistä";
+  }
+  else
+  {
+    echo base_url($dir)."/aurinko.png";
+    $saa = "Poutaista";
+  }?>" alt="" height="250" width="250">
+  <br><br><sub>Viimeksi päivitetty <?php echo substr($nykytila_aika[0]['kello'],0,-3).' '.$nykytila_aika[0]['pvm'] ?> <br>
+  </sub><br><br>
+</div>
+<div class="column right"><br><br><br>
+  <?php echo $saa; ?><br><br>
+  Lämpötila: <?php echo $saatila[0]['lampo'] ?>°C<br>
+  Ilmankosteus: <?php echo $saatila[0]['kosteus'] ?> %<br>
+  Ilmanpaine: <?php echo $saatila[0]['ilmanpaine'] ?> hPa<br><br><br><br><br><br>
+</div>
+
+<div>
+  <font size="4">Päivän sää</font>
+  <table class="table table-borderless">
+    <?php
+    foreach ($saatila as $rivi) {
+      if($rivi['idsaatila'] == 0)
+      {
+        continue;
+      }
+      else
+      {
+      echo '<tr>';
+      echo '<td align="center" style="vertical-align:middle"><font size="5">'.substr($rivi['kello'],0,-3).'</font></td>';
+      echo '<td align="center" style="vertical-align:middle"><table class="table table-borderless"><tr>';
+      if($rivi['sade'] > 0.1 && $rivi['lampo'] >= 0)
+      {
+        echo '<td align="center" style="vertical-align:middle"><img src="'.base_url($dir)."/sade.png".'" alt="" height="100" width="100"></td>';
+        if($rivi['sade'] < 0.3)
+        {
+          $saa = "Kevyttä sadetta";
+        }
+        else if($rivi['sade'] < 0.7)
+        {
+          $saa = "Sadetta";
+        }
+        else
+        {
+          $saa = "Rankkaa sadetta";
+        }
+      }
+      else if($rivi['sade'] > 0.1 && $rivi['lampo'] < 0)
+      {
+        echo '<td align="center" style="vertical-align:middle"><img src="'.base_url($dir)."/lumi.png".'" alt="" height="100" width="100"></td>';
+        $saa = "Lumisadetta";
+      }
+      else if($rivi['valo'] < 10 && (substr($rivi['kello'],0,-6) > 19 || substr($rivi['kello'],0,-6) < 7))
+      {
+        echo '<td align="center" style="vertical-align:middle"><img src="'.base_url($dir)."/puolipilvikuu.png".'" alt="" height="100" width="100"></td>';
+        $saa = "Puolipilvistä";
+      }
+      else if($rivi['valo'] < 50 && (substr($rivi['kello'],0,-6) > 19 || substr($rivi['kello'],0,-6) < 7))
+      {
+        echo '<td align="center" style="vertical-align:middle"><img src="'.base_url($dir)."/kuu.png".'" alt="" height="100" width="100"></td>';
+        $saa = "Poutaista";
+      }
+      else if($rivi['valo'] < 500)
+      {
+        echo '<td align="center" style="vertical-align:middle"><img src="'.base_url($dir)."/pilvi.png".'" alt="" height="100" width="100"></td>';
+        $saa = "Pilvistä";
+      }
+      else if($rivi['valo'] < 1500)
+      {
+        echo '<td align="center" style="vertical-align:middle"><img src="'.base_url($dir)."/puolipilvi.png".'" alt="" height="100" width="100"></td>';
+        $saa = "Puolipilvistä";
+      }
+      else
+      {
+        echo '<td align="center" style="vertical-align:middle"><img src="'.base_url($dir)."/aurinko.png".'" alt="" height="100" width="100"></td>';
+        $saa = "Poutaista";
+      }
+      echo '</tr><tr><td align="center" style="vertical-align:middle"><font size="4">'.$saa.'</font></td></tr></table>';
+      echo '<td align="center" style="vertical-align:middle"><table class="table table-borderless"><tr><td align="center" style="vertical-align:middle"><font size="4">Lämpötila: '.$rivi['lampo'].'°C</td></tr>';
+      echo '<tr><td align="center" style="vertical-align:middle"><font size="4">Ilmankosteus: '.$rivi['kosteus'].' %</font></td></tr>';
+      echo '<tr><td align="center" style="vertical-align:middle"><font size="4">Ilmanpaine: '.$rivi['ilmanpaine'].' hPa</font></td></tr></table></td>';
+      echo '</tr>';
+    }
+    }
+    ?>
+  </table>
+</div>

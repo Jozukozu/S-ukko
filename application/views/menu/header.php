@@ -24,81 +24,119 @@
   .navbar-inverse .navbar-nav>.dropdown>a:hover .caret { border-top-color: #FFFFFF}
   .navbar-inverse .navbar-nav>.dropdown>a .caret { border-bottom-color: #999999}
   .navbar-inverse .navbar-nav>.dropdown>a:hover .caret { border-bottom-color: #FFFFFF}
+  ul.nav li.dropdown:hover > ul.dropdown-menu {
+    display: block;
+}
+/* Create two unequal columns that floats next to each other */
+.column {
+    float: left;
+    padding: 10px;
+}
+
+.left {
+  width: 25%;
+}
+
+.right {
+  width: 75%;
+  font-size: large;
+}
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+.table-borderless > tbody > tr > td,
+.table-borderless > tbody > tr > th,
+.table-borderless > tfoot > tr > td,
+.table-borderless > tfoot > tr > th,
+.table-borderless > thead > tr > td,
+.table-borderless > thead > tr > th {
+    border: none;
+}
 </style>
   <nav class="navbar navbar-inverse">
     <div class="container-fluid">
       <div class="navbar-header">
-        <a class="navbar-brand" href="#">Sääsivu</a>
+        <a class="navbar-brand" href="<?php echo site_url('saasivu/show_weather');?>">Sääsivu</a>
       </div>
       <ul class="nav navbar-nav">
-        <li><a href="<?php echo site_url();?>">Etusivu</a></li>
         <li><a href="<?php echo site_url('saasivu/show_weather');?>">Sää</a></li>
         <li class="dropdown">
         <a class="dropdown" data-toggle="dropdown" href="#">Säähistoria
         <span class="caret"></span></a>
         <ul class="dropdown-menu">
-          <li><a href="#">Page 1-1</a></li>
-          <li><a href="#">Page 1-2</a></li>
-          <li><a href="#">Page 1-3</a></li>
+
+          <?php
+
+          $this->db->select('pvm');
+          $this->db->from('saatila');
+          $this->db->where('idsaatila =', 0);
+          $pvmnow = $this->db->get()->result_array();
+
+          $this->db->select('idsaatila, pvm');
+          $this->db->from('saatila');
+          $this->db->order_by('idsaatila', 'desc');
+          $this->db->limit(1);
+          $id = $this->db->get()->result_array();
+          $id2 = $id[0]['idsaatila'];
+
+          if ($pvmnow[0]['pvm'] == $id[0]['pvm'])
+          {
+          for ($i = 1; $i<8; $i++){
+            $this->db->select('pvm');
+            $this->db->from('saatila');
+            $this->db->where('idsaatila', $id2);
+            $pvm = $this->db->get()->result_array();
+            $this->db->select('pvm, vkpaiva, idsaatila');
+            $this->db->from('saatila');
+            $string = $pvm[0]['pvm'];
+            $this->db->where('pvm !=', $string);
+            $this->db->where('idsaatila <', $id2);
+            $this->db->order_by('idsaatila', 'desc');
+            $this->db->limit(1);
+            $tiedot = $this->db->get()->result_array();
+            if($tiedot != null && $pvmnow[0]['pvm'] != $tiedot[0]['pvm'])
+            {
+            $id2 = $tiedot[0]['idsaatila'];
+            echo '<li><a href="'.site_url('saasivu/show_weather_history/').$i.'">'.$tiedot[0]['vkpaiva'].' '.$tiedot[0]['pvm'].'</a></li>';
+          }
+          }
+          }
+
+          else {
+            $this->db->select('pvm, vkpaiva, idsaatila');
+            $this->db->from('saatila');
+            $this->db->where('idsaatila', $id2);
+            $pvm = $this->db->get()->result_array();
+            echo '<li><a href="'.site_url('saasivu/show_weather_history/1').'">'.$pvm[0]['vkpaiva'].' '.$pvm[0]['pvm'].'</a></li>';
+            for ($i = 2; $i<8; $i++){
+              $this->db->select('pvm');
+              $this->db->from('saatila');
+              $this->db->where('idsaatila', $id2);
+              $pvm = $this->db->get()->result_array();
+              $this->db->select('pvm, vkpaiva, idsaatila');
+              $this->db->from('saatila');
+              $string = $pvm[0]['pvm'];
+              $this->db->where('pvm !=', $string);
+              $this->db->where('idsaatila <', $id2);
+              $this->db->order_by('idsaatila', 'desc');
+              $this->db->limit(1);
+              $tiedot = $this->db->get()->result_array();
+              if($tiedot != null && $pvmnow[0]['pvm'] != $tiedot[0]['pvm'])
+              {
+              $id2 = $tiedot[0]['idsaatila'];
+              echo '<li><a href="'.site_url('saasivu/show_weather_history/').$i.'">'.$tiedot[0]['vkpaiva'].' '.$tiedot[0]['pvm'].'</a></li>';
+            }
+            }
+          }?>
         </ul>
       </li>
       </ul>
     </div>
   </nav>
 
+
 <div class="container">
-
-
-<!-- <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Verkkopankki</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  </head>
-  <body>
-    <nav class="navbar navbar-default">
-      <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="#">Verkkopankki</a>
-    </div>
-    <ul class="nav navbar-nav">
-      <?php
-      if(isset($_SESSION['log_in']) && $_SESSION['log_in']==true){
-        if(is_string($_SESSION['user'])){
-          echo 'Tervetuloa '.$_SESSION['user'];
-        }
-        echo '<li> <a href="'.site_url('login/logout').'">Kirjaudu ulos</a> </li>';
-      }
-      ?>
-      <li> <a href="<?php echo site_url();?>">Etusivu</a> </li>
-
-      <?php
-      if(isset($_SESSION['log_in']) && $_SESSION['log_in']==true){
-        if($_SESSION['user']=='admin'){
-          echo '<li> <a href="'.site_url('user/user_form').'">Lisää tunnus</a> </li>';
-          echo '<li> <a href="'.site_url('user/user_form_atm').'">Lisää kortti</a> </li>';
-        }
-        else if (is_string($_SESSION['user'])) {
-          echo '<li> <a href="'.site_url('verkkopankki/accounts').'">Tilit</a> </li>';
-          echo '<li> <a href="'.site_url('verkkopankki/transfer').'">Tilisiirto</a> </li>';
-        }
-        else {
-          echo '<li> <a href="'.site_url('pankkiautomaatti/withdraw').'">Nosta rahaa</a> </li>';
-          echo '<li> <a href="'.site_url('pankkiautomaatti/check_balance').'">Tarkista saldo</a> </li>';
-        }
-      }
-      else {
-        echo '<li> <a href="'.site_url('login/login_form').'">Kirjaudu verkkopankkiin</a> </li>';
-        echo '<li> <a href="'.site_url('login/login_form_atm').'">Kirjaudu pankkiautomaattiin</a> </li>';
-      }
-       ?>
-       <li> <a href="<?php echo site_url('pankki/show_customers');?>">Pankkivirkailijan näkymä</a> </li>
-    </ul>
-  </div>
-</nav>
-
-    <div class="container"> -->

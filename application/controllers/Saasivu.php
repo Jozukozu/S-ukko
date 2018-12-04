@@ -12,53 +12,15 @@ class Saasivu extends CI_Controller {
     $this->load->model('Saasivu_model');
     $data['nykytila']=$this->Saasivu_model->get_nykytila();
     $data['nykytila_aika']=$this->Saasivu_model->get_nykytila_aika();
+    $data['saatila']=$this->Saasivu_model->get_weather(0);
     $data['page']='saasivu/show_weather';
     $this->load->view('menu/content',$data);
   }
 
-  public function show_weather_history(){
+  public function show_weather_history($i){
     $this->load->model('Saasivu_model');
-    $data['saatila']=$this->Saasivu_model->get_weather();
-    $data['nykytila_aika']=$this->Saasivu_model->get_nykytila_aika();
-    $data['uusin_id']=$this->Saasivu_model->get_newest_id();
+    $data['saatila']=$this->Saasivu_model->get_weather($i);
     $data['page']='saasivu/show_weather_history';
-    $this->load->view('menu/content',$data);
-  }
-
-  public function maanantai(){
-    $this->load->model('Saasivu_model');
-    $data['saatila']=$this->Saasivu_model->get_nykytila();
-    $data['page']='saasivu/maanantai';
-    $this->load->view('menu/content',$data);
-  }
-  public function tiistai(){
-    $this->load->model('Saasivu_model');
-    $data['page']='saasivu/tiistai';
-    $this->load->view('menu/content',$data);
-  }
-  public function keskiviikko(){
-    $this->load->model('Saasivu_model');
-    $data['page']='saasivu/keskiviikko';
-    $this->load->view('menu/content',$data);
-  }
-  public function torstai(){
-    $this->load->model('Saasivu_model');
-    $data['page']='saasivu/torstai';
-    $this->load->view('menu/content',$data);
-  }
-  public function perjantai(){
-    $this->load->model('Saasivu_model');
-    $data['page']='saasivu/perjantai';
-    $this->load->view('menu/content',$data);
-  }
-  public function lauantai(){
-    $this->load->model('Saasivu_model');
-    $data['page']='saasivu/lauantai';
-    $this->load->view('menu/content',$data);
-  }
-  public function sunnuntai(){
-    $this->load->model('Saasivu_model');
-    $data['page']='saasivu/sunnuntai';
     $this->load->view('menu/content',$data);
   }
 }
