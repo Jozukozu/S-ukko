@@ -1,0 +1,65 @@
+import serial
+import MySQLdb
+import datetime
+import time
+ 
+port = serial.Serial("/dev/ttyACM0", baudrate=9600, timeout = 1.0)
+db = MySQLdb.connect(host="mysli.oamk.fi", user= "t7rosa00", passwd ="g5oPueJE",db="opisk_t7rosa00")
+cur = db.cursor()              
+oneline = ""
+fieldIndex = 0
+ 
+vkpaivat = ['Maanantai','Tiistai','Keskiviikko','Torstai','Perjantai','Lauantai','Sunnuntai']
+port.reset_input_buffer()  
+while True:
+    try:
+        rcv = port.read().decode('utf-8')
+        if rcv == "!":
+            if fieldIndex == 0:
+                kosteus = float(oneline)
+            elif fieldIndex == 1:
+                lampo = float(oneline)
+            elif fieldIndex == 2:
+                sade = float(oneline)
+            elif fieldIndex == 3:
+                valo = float(oneline)
+            elif fieldIndex == 4:
+                ilmanpaine = float(oneline)
+            fieldIndex += 1
+            if fieldIndex == 5:                      
+                fieldIndex = 0    
+                d = datetime.date.today()            
+                vkpaiva = vkpaivat[d.weekday()]
+                d = d.strftime("%d.%m.%y")
+                aika = str(datetime.datetime.today()).split('.',1)[0]            
+                pvm = str(d)
+                kello = aika.split(' ',1)[1]
+                tunti = kello.split(':',1)[0]            
+                sql = "SELECT pvm, kello FROM saatila WHERE idsaatila = 0"
+                cur.execute(sql)
+                results = cur.fetchall()            
+                prevpvm = results[0][0]
+                prevtunti = results[0][1].split(':',1)[0]
+                sql = "UPDATE saatila SET pvm = '%s', kello = '%s', lampo = %s, sade = %s, kosteus= %s, valo = %s, ilmanpaine = %s, vkpaiva ='%s' WHERE idsaatila = 0" % (pvm, kello, lampo, sade, kosteus, valo, ilmanpaine, vkpaiva)
+                cur.execute(sql)
+                print(kello)
+                if pvm != prevpvm or tunti != prevtunti:                
+                    sql = "INSERT INTO saatila (pvm, kello, lampo, sade, kosteus, valo, ilmanpaine, vkpaiva) VALUES ('%s', '%s', %s, %s, %s, %s, %s, '%s')" % (pvm, kello, lampo, sade, kosteus, valo, ilmanpaine, vkpaiva)
+                    cur.execute(sql)
+                    sql = "SELECT idsaatila FROM saatila ORDER BY idsaatila DESC LIMIT 1"
+                    cur.execute(sql)
+                    id = cur.fetchone()[0]
+                    sql = "DELETE FROM saatila WHERE idsaatila < %i AND idsaatila != 0" % (id - 200)
+                    cur.execute(sql)
+                    print("database updated for %s klo %s" % (pvm, tunti))
+                db.commit()      
+            oneline = ""
+        else:
+            oneline += rcv
+    except:
+        print("error")
+        try:
+            db = MySQLdb.connect(host="mysli.oamk.fi", user= "t7rosa00", passwd ="g5oPueJE",db="opisk_t7rosa00")
+            cur = db.cursor()
+        except:
+            print("failed to connect")
