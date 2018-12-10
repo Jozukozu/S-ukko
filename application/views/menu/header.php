@@ -37,9 +37,13 @@
   width: 25%;
 }
 
-.right {
-  width: 75%;
+.middle {
+  width: 25%;
   font-size: large;
+}
+
+.right {
+  width: 50%;
 }
 
 /* Clear floats after the columns */

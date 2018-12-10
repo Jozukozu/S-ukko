@@ -30,12 +30,17 @@ $dir = "assets/images/";
         echo '<td align="center" style="vertical-align:middle"><img src="'.base_url($dir)."/lumi.png".'" alt="" height="150" width="150"></td>';
         $saa = "Lumisadetta";
       }
-      else if($rivi['valo'] < 10 && (substr($rivi['kello'],0,-6) > 19 || substr($rivi['kello'],0,-6) < 7))
+      else if($rivi['valo'] < 1)
+      {
+        echo '<td align="center" style="vertical-align:middle"><img src="'.base_url($dir)."/pilvi.png".'" alt="" height="150" width="150"></td>';
+        $saa = "Pilvistä";
+      }
+      else if($rivi['valo'] < 5/* && (substr($rivi['kello'],0,-6) > 19 || substr($rivi['kello'],0,-6) < 7)*/)
       {
         echo '<td align="center" style="vertical-align:middle"><img src="'.base_url($dir)."/puolipilvikuu.png".'" alt="" height="150" width="150"></td>';
         $saa = "Puolipilvistä";
       }
-      else if($rivi['valo'] < 50 && (substr($rivi['kello'],0,-6) > 19 || substr($rivi['kello'],0,-6) < 7))
+      else if($rivi['valo'] < 10/* && (substr($rivi['kello'],0,-6) > 19 || substr($rivi['kello'],0,-6) < 7)*/)
       {
         echo '<td align="center" style="vertical-align:middle"><img src="'.base_url($dir)."/kuu.png".'" alt="" height="150" width="150"></td>';
         $saa = "Poutaista";

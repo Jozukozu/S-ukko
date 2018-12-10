@@ -3,14 +3,14 @@
 $dir = "assets/images/";
 ?>
 <div class="column left">
-  <img src="<?php if($saatila[0]['sade'] > 0.1 && $saatila[0]['lampo'] >= 0)
+  <br><br><img src="<?php if($nykytila[0]['sade'] > 0.1 && $nykytila[0]['lampo'] >= 0)
   {
     echo base_url($dir)."/sade.png";
-    if($saatila[0]['sade'] < 0.3)
+    if($nykytila[0]['sade'] < 0.3)
     {
       $saa = "Kevyttä sadetta";
     }
-    else if($saatila[0]['sade'] < 0.7)
+    else if($nykytila[0]['sade'] < 0.7)
     {
       $saa = "Sadetta";
     }
@@ -19,27 +19,32 @@ $dir = "assets/images/";
       $saa = "Rankkaa sadetta";
     }
   }
-  else if($saatila[0]['sade'] > 0.1 && $saatila[0]['lampo'] < 0)
+  else if($nykytila[0]['sade'] > 0.1 && $nykytila[0]['lampo'] < 0)
   {
     echo base_url($dir)."/lumi.png";
     $saa = "Lumisadetta";
   }
-  else if($saatila[0]['valo'] < 10 && (substr($saatila[0]['kello'],0,-6) > 19 || substr($saatila[0]['kello'],0,-6) < 7))
-  {
-    echo base_url($dir)."/puolipilvikuu.png";
-    $saa = "Puolipilvistä";
-  }
-  else if($saatila[0]['valo'] < 50 && (substr($saatila[0]['kello'],0,-6) > 19 || substr($saatila[0]['kello'],0,-6) < 7))
-  {
-    echo base_url($dir)."/kuu.png";
-    $saa = "Poutaista";
-  }
-  else if($saatila[0]['valo'] < 500)
+  else if($nykytila[0]['valo'] < 1)
   {
     echo base_url($dir)."/pilvi.png";
     $saa = "Pilvistä";
   }
-  else if($saatila[0]['valo'] < 1500)
+  else if($nykytila[0]['valo'] < 5/* && (substr($nykytila_aika[0]['kello'],0,-6) > 19 || substr($nykytila_aika[0]['kello'],0,-6) < 7)*/)
+  {
+    echo base_url($dir)."/puolipilvikuu.png";
+    $saa = "Puolipilvistä";
+  }
+  else if($nykytila[0]['valo'] < 10/* && (substr($nykytila_aika[0]['kello'],0,-6) > 19 || substr($nykytila_aika[0]['kello'],0,-6) < 7)*/)
+  {
+    echo base_url($dir)."/kuu.png";
+    $saa = "Poutaista";
+  }
+  else if($nykytila[0]['valo'] < 500)
+  {
+    echo base_url($dir)."/pilvi.png";
+    $saa = "Pilvistä";
+  }
+  else if($nykytila[0]['valo'] < 1500)
   {
     echo base_url($dir)."/puolipilvi.png";
     $saa = "Puolipilvistä";
@@ -52,16 +57,39 @@ $dir = "assets/images/";
   <br><br><sub>Viimeksi päivitetty <?php echo substr($nykytila_aika[0]['kello'],0,-3).' '.$nykytila_aika[0]['pvm'] ?> <br>
   </sub><br><br>
 </div>
-<div class="column right"><br><br><br>
+<div class="column middle"><br><br><br><br><br>
   <?php echo $saa; ?><br><br>
-  Lämpötila: <?php echo $saatila[0]['lampo'] ?>°C<br>
-  Ilmankosteus: <?php echo $saatila[0]['kosteus'] ?> %<br>
-  Ilmanpaine: <?php echo $saatila[0]['ilmanpaine'] ?> hPa<br><br><br><br><br><br>
+  Lämpötila: <?php echo $nykytila[0]['lampo'] ?>°C<br>
+  Ilmankosteus: <?php echo $nykytila[0]['kosteus'] ?> %<br>
+  Ilmanpaine: <?php echo $nykytila[0]['ilmanpaine'] ?> hPa<br>
+</div>
+<div class="column right">
+  <img src="
+  <?php
+    if ($nykytila[0]['lampo'] < 0)
+    {
+      echo base_url($dir)."/saaukkolumi.png";
+    }
+    else if ($nykytila[0]['sade'] > 0.1)
+    {
+      echo base_url($dir)."/saaukkosade.png";
+    }
+    else if ($nykytila[0]['lampo'] > 20)
+    {
+      echo base_url($dir)."/saaukkokesa.png";
+    }
+    else
+    {
+      echo base_url($dir)."/saaukkomuu.png";
+    }
+   ?>
+   " alt="" width="500"><br><br><br><br><br>
 </div>
 
 <div>
-  <font size="4">Päivän sää</font>
+  <!-- <font size="4">Päivän sää</font> -->
   <table class="table table-borderless">
+    <th>Päivän sää</th>
     <?php
     foreach ($saatila as $rivi) {
       if($rivi['idsaatila'] == 0)
@@ -94,12 +122,18 @@ $dir = "assets/images/";
         echo '<td align="center" style="vertical-align:middle"><img src="'.base_url($dir)."/lumi.png".'" alt="" height="100" width="100"></td>';
         $saa = "Lumisadetta";
       }
-      else if($rivi['valo'] < 10 && (substr($rivi['kello'],0,-6) > 19 || substr($rivi['kello'],0,-6) < 7))
+
+      else if($rivi['valo'] < 1)
+      {
+        echo '<td align="center" style="vertical-align:middle"><img src="'.base_url($dir)."/pilvi.png".'" alt="" height="100" width="100"></td>';
+        $saa = "Pilvistä";
+      }
+      else if($rivi['valo'] < 5/* && (substr($rivi['kello'],0,-6) > 19 || substr($rivi['kello'],0,-6) < 7)*/)
       {
         echo '<td align="center" style="vertical-align:middle"><img src="'.base_url($dir)."/puolipilvikuu.png".'" alt="" height="100" width="100"></td>';
         $saa = "Puolipilvistä";
       }
-      else if($rivi['valo'] < 50 && (substr($rivi['kello'],0,-6) > 19 || substr($rivi['kello'],0,-6) < 7))
+      else if($rivi['valo'] < 10/* && (substr($rivi['kello'],0,-6) > 19 || substr($rivi['kello'],0,-6) < 7)*/)
       {
         echo '<td align="center" style="vertical-align:middle"><img src="'.base_url($dir)."/kuu.png".'" alt="" height="100" width="100"></td>';
         $saa = "Poutaista";
