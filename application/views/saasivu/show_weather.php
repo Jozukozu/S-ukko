@@ -29,12 +29,12 @@ $dir = "assets/images/";
     echo base_url($dir)."/pilvi.png";
     $saa = "Pilvistä";
   }
-  else if($nykytila[0]['valo'] < 5/* && (substr($nykytila_aika[0]['kello'],0,-6) > 19 || substr($nykytila_aika[0]['kello'],0,-6) < 7)*/)
+  else if($nykytila[0]['valo'] < 5)
   {
     echo base_url($dir)."/puolipilvikuu.png";
     $saa = "Puolipilvistä";
   }
-  else if($nykytila[0]['valo'] < 10/* && (substr($nykytila_aika[0]['kello'],0,-6) > 19 || substr($nykytila_aika[0]['kello'],0,-6) < 7)*/)
+  else if($nykytila[0]['valo'] < 10)
   {
     echo base_url($dir)."/kuu.png";
     $saa = "Poutaista";
@@ -87,7 +87,6 @@ $dir = "assets/images/";
 </div>
 
 <div>
-  <!-- <font size="4">Päivän sää</font> -->
   <table class="table table-borderless">
     <th>Päivän sää</th>
     <?php
@@ -128,12 +127,12 @@ $dir = "assets/images/";
         echo '<td align="center" style="vertical-align:middle"><img src="'.base_url($dir)."/pilvi.png".'" alt="" height="100" width="100"></td>';
         $saa = "Pilvistä";
       }
-      else if($rivi['valo'] < 5/* && (substr($rivi['kello'],0,-6) > 19 || substr($rivi['kello'],0,-6) < 7)*/)
+      else if($rivi['valo'] < 5)
       {
         echo '<td align="center" style="vertical-align:middle"><img src="'.base_url($dir)."/puolipilvikuu.png".'" alt="" height="100" width="100"></td>';
         $saa = "Puolipilvistä";
       }
-      else if($rivi['valo'] < 10/* && (substr($rivi['kello'],0,-6) > 19 || substr($rivi['kello'],0,-6) < 7)*/)
+      else if($rivi['valo'] < 10)
       {
         echo '<td align="center" style="vertical-align:middle"><img src="'.base_url($dir)."/kuu.png".'" alt="" height="100" width="100"></td>';
         $saa = "Poutaista";
