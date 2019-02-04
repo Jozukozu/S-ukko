@@ -1,0 +1,8 @@
+The Weatherman
+
+
+This was our first second-year project. We worked with a Raspberry Pi and Nucleo boards, and a few different sensors to create a little 
+weather station. It's information was then saved in a database and then showed in a website. The website has a current weather and a week's
+history tab. The frontpage shows a picture of a cute "weatherman", who changes clothes according to the weather. Different weather conditions
+have also their own sprites, like a picture of sun for sunny and so on. The database was set in the Raspberry Pi while the website was hosted
+from the school's servers.
